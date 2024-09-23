@@ -5,9 +5,11 @@
         <% for (let campground of campgrounds){%>
             <div class="card mb-3">
                 <div class="row">
+                    <% if (campground.images.length > 0) { %>
                     <div class="col-md-4">
-                        <img src="<%= campground.image  %>" alt="" class="img-fluid">
+                        <img src="<%= campground.images[0].url  %>" alt="" class="img-fluid">
                     </div>
+                    <% } %>
                     <div class="col-md-8">
                         <div class="card-body">
                             <h5 class="card-title">
@@ -26,5 +28,6 @@
                         </div>
                     </div>
                 </div>
-                <%}%>
+            </div>
+        <%}%>
     </ul>

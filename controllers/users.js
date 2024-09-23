@@ -33,12 +33,16 @@ module.exports.storeReturnTo = (req, res, next) => {
 
 module.exports.login = (req, res) => {
     req.flash('success', 'Welcome back!');
-    const redirectUrl = res.locals.returnTo || '/campgrounds'; // update this line to use res.locals.returnTo now
+    const redirectUrl = res.locals.returnTo || '/campgrounds';
     res.redirect(redirectUrl);
 };
 
-module.exports.logout = (req, res) => {
-    req.logout();
-    req.flash('success', "Goodbye!");
-    res.redirect('/campgrounds');
-}
+module.exports.logout = (req, res, next) => {
+    req.logout((err) => {
+        if (err) { 
+            return next(err); // Passes any errors to the Express error handler
+        }
+        req.flash('success', "Goodbye!");
+        res.redirect('/campgrounds');
+    });
+};
