@@ -2,10 +2,13 @@ const mongoose = require('mongoose');
 const cities = require('./cities');
 const { places, descriptors } = require('./seedHelpers');
 const Campground = require('../models/campground');
-console.log("hello");
+
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
 
 
-mongoose.connect('mongodb://localhost:27017/yelp-camp');
+mongoose.connect(process.env.DB_URL);
 
 const db = mongoose.connection;
 
