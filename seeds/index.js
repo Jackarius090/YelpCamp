@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const cities = require('./cities');
 const { places, descriptors } = require('./seedHelpers');
 const Campground = require('../models/campground');
+console.log("hello");
+
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp');
 
@@ -17,7 +19,7 @@ const sample = array => array[Math.floor(Math.random() * array.length)];
 
 const seedDB = async () => {
     await Campground.deleteMany({});
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 300; i++) {
         const random1000 = Math.floor(Math.random() * 1000);
         const price = Math.floor(Math.random() * 20) + 10;
         const camp = new Campground({
@@ -29,7 +31,10 @@ const seedDB = async () => {
             price,
             geometry: {
                 type: "Point",
-                coordinates: [-113.1331, 47.0202]
+                coordinates: [
+                    cities[random1000].longitude,
+                    cities[random1000].latitude,
+                ]
             },
             images: [
                 {
@@ -42,6 +47,12 @@ const seedDB = async () => {
                 }
             ]
         })
+        // Attempt to seed database with geocoder coordinate data. Did not work...
+        // const geoData = await geocoder.forwardGeocode({
+        //     query: req.body.campground.location,
+        //     limit: 1
+        // }).send()
+        // campground.geometry = geoData.body.features[0].geometry;
         await camp.save();
     }
 }
